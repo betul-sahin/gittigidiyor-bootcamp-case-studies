@@ -12,13 +12,19 @@ import com.betulsahin.schoolmanagementsystemv5.mappers.InstructorMapper;
 import com.betulsahin.schoolmanagementsystemv5.repositories.InstructorRepository;
 import com.betulsahin.schoolmanagementsystemv5.repositories.InstructorServiceTransactionLoggerRepository;
 import com.betulsahin.schoolmanagementsystemv5.utils.ClientRequestInfo;
+import com.betulsahin.schoolmanagementsystemv5.utils.InstructorValidator;
 import com.betulsahin.schoolmanagementsystemv5.utils.PayrollUtil;
 import lombok.RequiredArgsConstructor;
+import org.apache.tomcat.jni.Local;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -153,6 +159,14 @@ public class InstructorService {
         instructorRepository.delete(selectedInstructor);
     }
 
+    /**
+     * saves salary changes of the instructor.
+     *
+     * @param instructor
+     * @param salaryBefore
+     * @param salaryPercentage
+     * @param salaryUpdateType
+     */
     private void saveSalaryUpdateTransactions(Instructor instructor,
                                               double salaryBefore,
                                               double salaryPercentage,
@@ -170,5 +184,43 @@ public class InstructorService {
         transactionLogger.setSalaryUpdateType(salaryUpdateType);
         this.instructorServiceTransactionLoggerRepository.save(transactionLogger);
     }
-}
 
+    /**
+     * gets transactions by date for salary changes.
+     *
+     * @param requestDate
+     * @param pageNumber
+     * @param pageSize
+     * @param pageable
+     * @return
+     */
+    public Page<List<InstructorServiceTransactionLogger>> getAllTransactionsWithDate(String requestDate, Integer pageNumber, Integer pageSize, Pageable pageable) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/MM/yyyy");
+        InstructorValidator.validateRequestDate(requestDate, formatter);
+        LocalDate requestDateResult = LocalDate.parse(requestDate, formatter);
+
+        if(pageNumber != null && pageSize != null){
+            pageable = PageRequest.of(pageNumber, pageSize);
+        }
+
+        return this.instructorServiceTransactionLoggerRepository.findAllTransactionByRequestDate(requestDateResult, pageable);
+    }
+
+    /**
+     * gets transactions by instructor id for salary changes.
+     *
+     * @param instructorId
+     * @param pageNumber
+     * @param pageSize
+     * @param pageable
+     * @return
+     */
+    public Page<List<InstructorServiceTransactionLogger>> getAllTransactionsWithInstructorId(long instructorId, Integer pageNumber, Integer pageSize, Pageable pageable){
+
+        if(pageNumber != null && pageSize != null){
+            pageable = PageRequest.of(pageNumber, pageSize);
+        }
+
+        return this.instructorServiceTransactionLoggerRepository.findAllTransactionByInstructorId(instructorId, pageable);
+    }
+}

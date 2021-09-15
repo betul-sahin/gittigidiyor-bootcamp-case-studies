@@ -1,10 +1,15 @@
 package com.betulsahin.schoolmanagementsystemv5.controllers;
 
 import com.betulsahin.schoolmanagementsystemv5.dtos.InstructorDto;
+import com.betulsahin.schoolmanagementsystemv5.models.InstructorServiceTransactionLogger;
 import com.betulsahin.schoolmanagementsystemv5.models.abstracts.Instructor;
 import com.betulsahin.schoolmanagementsystemv5.models.enums.SalaryUpdateType;
 import com.betulsahin.schoolmanagementsystemv5.services.InstructorService;
+import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -29,7 +34,24 @@ public class InstructorController {
         return new ResponseEntity<>(instructorOptional.get(), HttpStatus.CREATED);
     }
 
-    public
+    @GetMapping("/get-transactions-by-date")
+    public ResponseEntity<Page<List<InstructorServiceTransactionLogger>>> getAllTransactionsWithDate(
+            @ApiParam(value = "transaction query for salary update operations", example = "05/07/2021", required = true)
+            @RequestParam String requestDate,
+            @RequestParam(required = false) Integer pageNumber,
+            @RequestParam(required = false) Integer pageSize,
+            @PageableDefault(page=0, size=10)Pageable pageable){
+        return new ResponseEntity<>(this.instructorService.getAllTransactionsWithDate(requestDate, pageNumber, pageSize, pageable), HttpStatus.OK);
+    }
+
+    @GetMapping("/get-transactions-by-instructor-id")
+    public ResponseEntity<Page<List<InstructorServiceTransactionLogger>>> getAllTransactionsWithInstructorId(
+            @RequestParam long instructorId,
+            @RequestParam(required = false) Integer pageNumber,
+            @RequestParam(required = false) Integer pageSize,
+            @PageableDefault(page=0, size=10)Pageable pageable){
+        return new ResponseEntity<>(this.instructorService.getAllTransactionsWithInstructorId(instructorId, pageNumber, pageSize, pageable), HttpStatus.OK);
+    }
 
     @GetMapping
     public ResponseEntity<List<InstructorDto>> getAll(){
