@@ -1,4 +1,4 @@
-### School Management System
+# School Management System
 This is school management system application. You can simply manage students, courses and instructors on the system.
 
 - CRUD operations for Student/Lesson/Instructor.
@@ -7,9 +7,11 @@ This is school management system application. You can simply manage students, co
 - Checking student registration. (Maximum 20 students for each course)
 - Returning errors as response with the Global Exception Handler.
 - Logging of error history.
+- Calculate salary of instructor with given percentage.
+- Report salary transactions for instructor.
+- Unit test for controller/service classes.
 
-
-#### Tech Stack
+## Tech Stack
 Spring Boot  
 Spring Data Jpa  
 Postgre Sql  
@@ -17,12 +19,10 @@ Mapstruct
 Lombok  
 Swagger
 
-#### Run the Application
+## Run the Application
 1. Run below command.  
-   `mvn clean install`
-2. Navigate to "target" directory and run the application with below command.  
-   `java -jar SchoolManagementSystemV5-0.0.1-SNAPSHOT.jar`
+   `mvn clean install spring-boot:run`
 
-#### License
+## License
 Distributed under the MIT License. See [LICENSE](https://github.com/113-GittiGidiyor-Java-Spring-Bootcamp/fifth-homework-betul-sahin/blob/main/LICENSE) for more information.  
 
