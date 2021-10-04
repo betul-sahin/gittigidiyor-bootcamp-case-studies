@@ -1,0 +1,14 @@
+package com.betulsahin.schoolmanagementsystem.utils;
+
+public class ErrorMessageConstants {
+    public static final String NOT_APPROPRIATE_AGE_RANGE = "This age (%s) is not appropriate age range.";
+    public static final String FOUND_INSTRUCTOR = "The instructor is already exist with this phone number %d";
+    public static final String FOUND_COURSE = "The course is already exist with this code %s";
+    public static final String COURSE_EXCEEDED = "Student count (%d) for one course exceeded exception";
+    public static final String STUDENT_NOT_FOUND = "Student is not found with this id : %d";
+    public static final String COURSE_NOT_FOUND = "Course is not found with this id : %d";
+    public static final String FOUND_REGISTERED_STUDENT = "The Student (%d) is already registered this course.";
+    public static final String INSTRUCTOR_NOT_FOUND = "Instructor is not found with this id : %d";
+    public static final String COURSEREGISTRATION_NOT_FOUND = "Course registration is not found with this id : %d";
+    public static final String DATE_FORMAT_WRONG = "Date for transaciton request is wrong :";
+}
