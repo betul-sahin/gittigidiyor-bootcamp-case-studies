@@ -12,24 +12,18 @@ import com.betulsahin.schoolmanagementsystemv5.mappers.InstructorMapper;
 import com.betulsahin.schoolmanagementsystemv5.repositories.InstructorRepository;
 import com.betulsahin.schoolmanagementsystemv5.repositories.InstructorServiceTransactionLoggerRepository;
 import com.betulsahin.schoolmanagementsystemv5.utils.ClientRequestInfo;
-import com.betulsahin.schoolmanagementsystemv5.utils.InstructorValidator;
 import com.betulsahin.schoolmanagementsystemv5.utils.PayrollUtil;
 import lombok.RequiredArgsConstructor;
-import org.apache.tomcat.jni.Local;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static com.betulsahin.schoolmanagementsystemv5.utils.ErrorMessageConstants.FOUND_INSTRUCTOR;
+import static com.betulsahin.schoolmanagementsystemv5.utils.ErrorMessageConstants.INSTRUCTOR_FOUND;
 import static com.betulsahin.schoolmanagementsystemv5.utils.ErrorMessageConstants.INSTRUCTOR_NOT_FOUND;
 
 @Service
@@ -59,7 +53,7 @@ public class InstructorService {
     /**
      * finds the instructor object by id.
      *
-     * @param id the identity of the course
+     * @param id
      * @return the found instructor object
      */
     @Transactional(readOnly = true)
@@ -73,7 +67,7 @@ public class InstructorService {
     /**
      * creates an instructor to database.
      *
-     * @param request the request object of instructor
+     * @param request
      * @return saved instructor as optional
      */
     @Transactional
@@ -84,7 +78,7 @@ public class InstructorService {
 
         if (instructorExist) {
             throw new InstructorIsAlreadyExistException(
-                    String.format(FOUND_INSTRUCTOR, request.getPhoneNumber()));
+                    String.format(INSTRUCTOR_FOUND, request.getPhoneNumber()));
         }
 
         Instructor savedInstructor = instructorRepository.save(
@@ -96,7 +90,7 @@ public class InstructorService {
     /**
      * updates a instructor to database.
      *
-     * @param request the request object of course
+     * @param request
      * @return updated instructor object as Optional
      */
     @Transactional
@@ -110,7 +104,7 @@ public class InstructorService {
 
         if (instructorExist) {
             throw new InstructorIsAlreadyExistException(
-                    String.format(FOUND_INSTRUCTOR, request.getPhoneNumber()));
+                    String.format(INSTRUCTOR_FOUND, request.getPhoneNumber()));
         }
 
         Instructor updatedInstructor = instructorRepository.save(
@@ -122,8 +116,8 @@ public class InstructorService {
     /**
      * updates salary of the instructor by given salary rate.
      *
-     * @param id         the identity of the instructor
-     * @param salaryRate for updating salary of the instructor
+     * @param id
+     * @param salaryRate
      * @return updated instructor object as Optional
      */
     @Transactional
@@ -150,7 +144,7 @@ public class InstructorService {
     /**
      * deletes the instructor object by id.
      *
-     * @param id the identity of the instructor object
+     * @param id
      */
     @Transactional(readOnly = true)
     public void deleteById(long id) {
@@ -160,7 +154,7 @@ public class InstructorService {
     }
 
     /**
-     * saves salary changes of the instructor.
+     * saves transactions for salary update.
      *
      * @param instructor
      * @param salaryBefore
@@ -184,43 +178,5 @@ public class InstructorService {
         transactionLogger.setSalaryUpdateType(salaryUpdateType);
         this.instructorServiceTransactionLoggerRepository.save(transactionLogger);
     }
-
-    /**
-     * gets transactions by date for salary changes.
-     *
-     * @param requestDate
-     * @param pageNumber
-     * @param pageSize
-     * @param pageable
-     * @return
-     */
-    public Page<List<InstructorServiceTransactionLogger>> getAllTransactionsWithDate(String requestDate, Integer pageNumber, Integer pageSize, Pageable pageable) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/MM/yyyy");
-        InstructorValidator.validateRequestDate(requestDate, formatter);
-        LocalDate requestDateResult = LocalDate.parse(requestDate, formatter);
-
-        if(pageNumber != null && pageSize != null){
-            pageable = PageRequest.of(pageNumber, pageSize);
-        }
-
-        return this.instructorServiceTransactionLoggerRepository.findAllTransactionByRequestDate(requestDateResult, pageable);
-    }
-
-    /**
-     * gets transactions by instructor id for salary changes.
-     *
-     * @param instructorId
-     * @param pageNumber
-     * @param pageSize
-     * @param pageable
-     * @return
-     */
-    public Page<List<InstructorServiceTransactionLogger>> getAllTransactionsWithInstructorId(long instructorId, Integer pageNumber, Integer pageSize, Pageable pageable){
-
-        if(pageNumber != null && pageSize != null){
-            pageable = PageRequest.of(pageNumber, pageSize);
-        }
-
-        return this.instructorServiceTransactionLoggerRepository.findAllTransactionByInstructorId(instructorId, pageable);
-    }
 }
+

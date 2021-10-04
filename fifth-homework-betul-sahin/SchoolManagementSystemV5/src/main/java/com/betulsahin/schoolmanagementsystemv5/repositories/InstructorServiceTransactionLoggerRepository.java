@@ -14,7 +14,4 @@ import java.util.List;
 public interface InstructorServiceTransactionLoggerRepository extends PagingAndSortingRepository<InstructorServiceTransactionLogger, Long> {
     @Query("SELECT ins FROM InstructorServiceTransactionLogger ins WHERE ins.requestDateTime = ?1")
     Page<List<InstructorServiceTransactionLogger>> findAllTransactionByRequestDate(LocalDate requestDate, Pageable pageable);
-
-    @Query("SELECT ins FROM InstructorServiceTransactionLogger ins WHERE ins.instructorId = ?1")
-    Page<List<InstructorServiceTransactionLogger>> findAllTransactionByInstructorId(long instructorId, Pageable pageable);
 }
