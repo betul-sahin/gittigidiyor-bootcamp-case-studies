@@ -1,4 +1,4 @@
-### School Management System  
+# School Management System  
 This is school management system application. You can simply manage students, courses and instructors on the system.   
 
 - CRUD operations for Student/Lesson/Instructor.  
@@ -9,7 +9,7 @@ This is school management system application. You can simply manage students, co
 - Logging of error history.  
 
    
-#### Tech Stack
+## Tech Stack
 Spring Boot  
 Spring Data Jpa  
 Postgre Sql  
@@ -17,12 +17,12 @@ Mapstruct
 Lombok  
 Swagger  
 
-#### Run the Application  
+## Run the Application  
 1. Run below command.  
 `mvn clean install`
 2. Navigate to "target" directory and run the application with below command.  
 `java -jar SchoolManagementSystemDemoV4-0.0.1-SNAPSHOT.jar`  
 
-#### License 
+## License 
 Distributed under the MIT License. See [LICENSE](https://github.com/113-GittiGidiyor-Java-Spring-Bootcamp/fourth-homework-betul-sahin/blob/main/LICENSE) for more information.  
 
