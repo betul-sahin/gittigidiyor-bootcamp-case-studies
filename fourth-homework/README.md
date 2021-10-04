@@ -19,9 +19,7 @@ Swagger
 
 ## Run the Application  
 1. Run below command.  
-`mvn clean install`
-2. Navigate to "target" directory and run the application with below command.  
-`java -jar SchoolManagementSystemDemoV4-0.0.1-SNAPSHOT.jar`  
+`mvn clean install spring-boot:run` 
 
 ## License 
 Distributed under the MIT License. See [LICENSE](https://github.com/113-GittiGidiyor-Java-Spring-Bootcamp/fourth-homework-betul-sahin/blob/main/LICENSE) for more information.  
